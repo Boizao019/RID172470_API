@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DncWeather</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Importando a fonte Inter do Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif; /* Usando a fonte Inter */
+        }
+        body {
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007bff;
+            padding: 15px 50px;
+            color: white;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        nav {
+            margin-left: auto; /* Move os links para a direita */
+        }
+        nav a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .intro {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .intro h1 {
+            font-size: 50px; /* Tamanho da fonte ajustado */
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            width: 400px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container label {
+            font-weight: bold;
+            font-size: 14px;
+            display: block;
+            margin-top: 10px;
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .cep-result, .weather-result {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .cep-result h2, .weather-result h2 {
+            font-size: 50px; /* Tamanho da fonte ajustado */
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 50%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px; /* Bordas arredondadas */
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .weather-box {
+            background: white;
+            padding: 15px;
+            display: inline-block;
+            border-radius: 10px; /* Bordas arredondadas */
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            text-align: right; /* Alinha os itens à direita */
+            padding: 15px 50px;
+            background-color: #007bff;
+            color: white;
+            margin-top: auto; /* Move o rodapé para o final da página */
+            font-size: 14px;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        /* Novos estilos para latitude e longitude lado a lado */
+        .coords-container {
+            display: flex;
+            gap: 10px; /* Espaço entre os campos */
+        }
+        .coords-container input {
+            width: calc(50% - 5px); /* Divide o espaço igualmente */
+        }
+        /* Estilos para as imagens ao lado dos textos */
+        .image-text-container {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* Centraliza o conteúdo */
+            gap: 20px; /* Espaço entre o texto e a imagem */
+            margin-bottom: 20px; /* Espaço entre as seções */
+        }
+        .image-text-container img {
+            border-radius: 10px; /* Bordas arredondadas nas imagens */
+        }
+        /* Dimensões específicas para as imagens */
+        .image-text-container img:nth-child(1) {
+            width: 255px;
+            height: 197px;
+        }
+        .image-text-container img:nth-child(2) {
+            width: 136px;
+            height: 133px;
+        }
+        .image-text-container img:nth-child(3) {
+            width: 106px;
+            height: 106px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">DncWeather</div>
+        <nav>
+            <a href="#">Endereços</a>
+            <a href="#">Previsão do tempo</a>
+        </nav>
+    </header>
+    <main>
+        <!-- Seção 1: Descubra Mais com Precisão -->
+        <section class="intro">
+            <div class="image-text-container">
+                <h1>Descubra Mais com Precisão:<br>Previsões do Tempo e endereços em tempo real.</h1>
+                <img src="image1.png" alt="Imagem 1">
+            </div>
+            <div class="form-container">
+                <form id="searchForm">
+                    <label>Primeiro Nome:</label>
+                    <input type="text" id="firstName" placeholder="Insira seu primeiro nome" required>
+                    <label>E-mail:</label>
+                    <input type="email" id="email" placeholder="Insira seu e-mail" required>
+                    <label>Digite o CEP:</label>
+                    <input type="text" id="cep" placeholder="Insira o CEP" required>
+                    <label>Digite a latitude e longitude para saber a previsão:</label>
+                    <div class="coords-container">
+                        <input type="text" id="latitude" placeholder="Latitude" required>
+                        <input type="text" id="longitude" placeholder="Longitude" required>
+                    </div>
+                    <button type="submit">Acessar</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Seção 2: Resultado da busca por CEP -->
+        <section class="cep-result">
+            <div class="image-text-container">
+                <h2>Resultado da busca por CEP:</h2>
+                <img src="image2.png" alt="Imagem 2">
+            </div>
+            <table id="cepTable">
+                <thead>
+                    <tr>
+                        <th>Logradouro/Nome</th>
+                        <th>Bairro/Distrito</th>
+                        <th>Localidade/UF</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Espaço em branco para os resultados da API -->
+                    <tr>
+                        <td colspan="3" style="text-align: center; padding: 20px;">Aguardando consulta...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Seção 3: Previsão do tempo na região -->
+        <section class="weather-result">
+            <div class="image-text-container">
+                <h2>Previsão do tempo na região:</h2>
+                <img src="image3.png" alt="Imagem 3">
+            </div>
+            <div class="weather-box" id="weatherBox">
+                Aguardando consulta...
+            </div>
+        </section>
+    </main>
+    <footer>
+        <a href="#">Termos de Uso</a> | <a href="#">Política de Privacidade</a>
+    </footer>
+
+    <script>
+        // Função para buscar endereço pelo CEP
+        async function fetchCEP(cep) {
+            try {
+                const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error("Erro ao buscar CEP:", error);
+                return null;
+            }
+        }
+
+        // Função para buscar previsão do tempo
+        async function fetchWeather(latitude, longitude) {
+            try {
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&temperature_unit=celsius`);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error("Erro ao buscar previsão do tempo:", error);
+                return null;
+            }
+        }
+
+        // Evento de envio do formulário
+        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const cep = document.getElementById('cep').value;
+            const latitude = document.getElementById('latitude').value;
+            const longitude = document.getElementById('longitude').value;
+
+            // Buscar endereço pelo CEP
+            const cepData = await fetchCEP(cep);
+            if (cepData && !cepData.erro) {
+                const cepTableBody = document.querySelector('#cepTable tbody');
+                cepTableBody.innerHTML = `
+                    <tr>
+                        <td>${cepData.logradouro}</td>
+                        <td>${cepData.bairro}</td>
+                        <td>${cepData.localidade}/${cepData.uf}</td>
+                    </tr>
+                `;
+            } else {
+                alert("CEP não encontrado. Verifique o CEP digitado.");
+            }
+
+            // Buscar previsão do tempo
+            const weatherData = await fetchWeather(latitude, longitude);
+            if (weatherData && weatherData.current_weather) {
+                const weatherBox = document.getElementById('weatherBox');
+                weatherBox.innerHTML = `
+                    Previsão de tempo de acordo com a região: ${weatherData.current_weather.temperature}°C
+                `;
+            } else {
+                alert("Não foi possível obter a previsão do tempo. Verifique as coordenadas.");
+            }
+        });
+    </script>
+</body>
+</html>
